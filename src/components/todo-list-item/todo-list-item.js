@@ -4,23 +4,23 @@ import './todo-list-item.css';
 
 export default class TodoListItem extends Component {
 
-  state = {
-    done: false,
-    important: false
-  };
+  // state = {
+  //   done: false,
+  //   important: false
+  // };
 
-  onLabelClick = () => {
-      this.setState(({done}) => ({done: !done}))
-  };
+  // onLabelClick = () => {
+  //     this.setState(({done}) => ({done: !done}))
+  // };
 
-  onImportantClick = () => {
-    this.setState((state) => ({important: !state.important}))
-    }
+  // onImportantClick = () => {
+  //   this.setState((state) => ({important: !state.important}))
+  //   }
   
 
   render() {
-    const {label, makeDel} = this.props;
-    const {done, important} = this.state;
+    const {label, makeDel, onToggleImportant, onToggleDone, done, important} = this.props;
+    // const {done, important} = this.state;
     let className = done ? 'todo-list-item done' : 'todo-list-item';
     className += important ? ' important' : '';
 
@@ -28,13 +28,17 @@ export default class TodoListItem extends Component {
       <span className={className}>
         <span
           className="todo-list-item-label"
-          onClick={this.onLabelClick}>
+          // onClick={this.onLabelClick}
+          onClick={onToggleDone}
+        >
           {label}
         </span>
 
         <button type="button"
                 className="btn btn-outline-success btn-sm float-right"
-                onClick={this.onImportantClick}>
+                // onClick={this.onImportantClick}
+                onClick={onToggleImportant}
+                >
           <i className="fa fa-exclamation" />
         </button>
 

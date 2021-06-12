@@ -13,11 +13,11 @@ export default class App extends Component {
 
   state = {
     data: [
-      {label: 'go to bad-1', important: true, id: 5},
-      {label: 'go to bad0', important: true, id: 9},
-      {label: 'wake up', important: false, id: 1},
-      {label: 'have a lunch', important: false, id: 2},
-      {label: 'go to bad', important: true, id: 3}
+      {label: 'go to bad-1', done: false, important: true, id: 5},
+      {label: 'go to bad0', done: false, important: true, id: 9},
+      {label: 'wake up', done: false, important: false, id: 1},
+      {label: 'have a lunch', done: false, important: false, id: 2},
+      {label: 'go to bad', done: false, important: true, id: 3}
     ]
   }
 
@@ -26,7 +26,7 @@ export default class App extends Component {
       return {
         data: [
           ...data,
-          {label: `new!!! ${this.maxId + 1}`, important: false, id: ++this.maxId}
+          {label: `new!!! ${this.maxId}`, important: false, id: this.maxId++}
         ]
       }
     })
@@ -44,22 +44,58 @@ export default class App extends Component {
     })
   }
 
-  render() {
-      return (
-      <div className="todo-app">
-        <AppHeader toDo={1} done={3} />
-        <div className="top-panel d-flex">
-          <SearchPanel />
-          <ItemStatusFilter />
-        </div>
+  onToggleImportant = (id) => console.log('imp', id);
 
-        <TodoList 
-          data={this.state.data}
-          makeDel={this.makeDel}
-        />
-        <AddItem onAddClick={this.onAddClick}/>
+  makeNewArray = (arr, id, prop) => {
+    const idx = arr.findIndex(el => el.id === id);
+    const newElement = {...arr[idx], [prop]: !arr[idx][prop]};
+    console.log(newElement)
+    return  [
+      ...arr.slice(0, idx),
+      newElement,
+      ...arr.slice(idx + 1)
+    ]
+  }
+
+
+ 
+  onToggleDone  = (id) => {
+    this.setState(({data}) => {
+      const newArray = this.makeNewArray(data, id, 'done');
+      return {data: newArray}
+    })
+  }
+
+  onToggleImportant  = (id) => {
+    this.setState(({data}) => {
+      const newArray = this.makeNewArray(data, id, 'important');
+      return {data: newArray}
+    })
+  }
+  
+
+  render() {   
+    const data = this.state.data;
+    const done = data.filter(el => el.done).length;
+    const toDo = data.length - done;
+
+    return (
+    <div className="todo-app">
+      <AppHeader toDo={done} done={toDo} />
+      <div className="top-panel d-flex">
+        <SearchPanel />
+        <ItemStatusFilter />
       </div>
-      );
-    }
+
+      <TodoList 
+        data={this.state.data}
+        makeDel={this.makeDel}
+        onToggleImportant={this.onToggleImportant}
+        onToggleDone = {this.onToggleDone}
+      />
+      <AddItem onAddClick={this.onAddClick}/>
+    </div>
+    );
+  }
 
 };
