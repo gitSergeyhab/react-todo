@@ -5,7 +5,7 @@ const TodoList = ({data, makeDel, onToggleImportant, onToggleDone}) => {
     const elements = data.map(item => 
         <li key={item.id} className='list-group-item'>
             <TodoListItem
-                label={item.label + '!'} 
+                label={item.label} 
                 important={item.important}
                 done={item.done}
                 makeDel={() => makeDel(item.id)}

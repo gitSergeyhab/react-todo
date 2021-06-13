@@ -21,12 +21,12 @@ export default class App extends Component {
     ]
   }
 
-  onAddClick = () => {
+  onAddItem = (value) => {
     this.setState(({data}) => {
       return {
         data: [
           ...data,
-          {label: `new!!! ${this.maxId}`, important: false, id: this.maxId++}
+          {label: value, important: false, id: this.maxId++}
         ]
       }
     })
@@ -49,7 +49,7 @@ export default class App extends Component {
   makeNewArray = (arr, id, prop) => {
     const idx = arr.findIndex(el => el.id === id);
     const newElement = {...arr[idx], [prop]: !arr[idx][prop]};
-    console.log(newElement)
+    // console.log(newElement)
     return  [
       ...arr.slice(0, idx),
       newElement,
@@ -93,7 +93,7 @@ export default class App extends Component {
         onToggleImportant={this.onToggleImportant}
         onToggleDone = {this.onToggleDone}
       />
-      <AddItem onAddClick={this.onAddClick}/>
+      <AddItem onAddItem={this.onAddItem}/>
     </div>
     );
   }
